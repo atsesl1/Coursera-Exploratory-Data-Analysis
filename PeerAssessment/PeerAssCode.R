@@ -73,3 +73,17 @@ dev.off()
 # Compare emissions from motor vehicle sources in Baltimore City with emissions from motor vehicle sources 
 # in Los Angeles County, California (fips == "06037"). 
 # Which city has seen greater changes over time in motor vehicle emissions?
+
+LADcomp <- NEI[which(NEI$fips=="06037" | NEI$fips=="24510"),] 
+LADcomp <- LADcomp[LADcomp$SCC %in% MotList,]
+
+LADcomp$fips <- gsub("06037", "LA",LADcomp$fips)
+LADcomp$fips <- gsub("24510", "BA",LADcomp$fips)
+colnames(LADcomp)[1] <- "State"
+
+png(filename="/Users/alex/Documents/R directory/Exploratory-Data-Analysis/PeerAssessment/plot6.png", width=480, height=480, units="px",bg="linen")
+ggplot(LADcomp,aes(year,Emissions,color=State)) +
+    geom_line(stat="summary",fun.y="sum") +
+        ggtitle("LA and Baltimore City Emmisions Comparison") +
+            ylab("Total Emission") + xlab("Year")
+  dev.off()  
